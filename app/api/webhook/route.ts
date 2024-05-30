@@ -78,3 +78,7 @@ export async function POST (req: Request) {
 
   return new Response('', { status: 200 })
 }
+
+export async function GET ( Request: Request ) {
+  return Response.json({it:"is ok"})
+}
