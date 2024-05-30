@@ -11,5 +11,5 @@ export async function GET ( Request: Request ) {
       } catch (error) {
         return new Response('Error fetching user list', { status: 500 });
       }
-    return Response.json(users);
+    return new Response(JSON.stringify(users));
   }
