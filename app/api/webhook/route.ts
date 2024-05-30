@@ -1,15 +1,17 @@
 import { Webhook } from 'svix'
 import { headers } from 'next/headers'
 import { WebhookEvent } from '@clerk/nextjs/server'
+import { PrismaClient } from '@prisma/client'
 
-export async function GET(req: Request) {
+const prisma = new PrismaClient();
+
+export async function POST (req: Request) {
 
   const WEBHOOK_SECRET = process.env.WEBHOOK_SECRET
 
   if (!WEBHOOK_SECRET) {
     throw new Error('Please add WEBHOOK_SECRET from Clerk Dashboard to .env or .env.local')
   }
-console.log("here 1");
 
   // Get the headers
   const headerPayload = headers();
@@ -23,7 +25,6 @@ console.log("here 1");
       status: 400
     })
   }
-  console.log("here 2");
 
   // Get the body
   const payload = await req.json()
@@ -47,15 +48,32 @@ console.log("here 1");
       status: 400
     })
   }
-  console.log("here 3");
 
   // Do something with the payload
   // For this guide, you simply log the payload to the console
-  const { id } = evt.data;
+  const { id, email_addresses } = evt.data as { id: string, email_addresses: Array<{ id: string; email_address: string }> };
   const eventType = evt.type;
+
+  if (eventType === 'user.created') {
+    const email = email_addresses[0].email_address;
+
+    // Store the user in the database
+    try {
+      await prisma.user.create({
+        data: {
+          id,
+          email,
+        },
+      });
+      console.log(`User with ID ${id} and email ${email} has been created.`);
+    } catch (error) {
+      console.error('Error storing user in database:', error);
+      return new Response('Internal Server Error', { status: 500 });
+    }
+  }
+
   console.log(`Webhook with and ID of ${id} and type of ${eventType}`)
   console.log('Webhook body:', body)
-  console.log("here 4");
 
   return new Response('', { status: 200 })
 }
