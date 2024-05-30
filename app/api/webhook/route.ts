@@ -6,7 +6,7 @@ import { PrismaClient } from '@prisma/client'
 
 const prisma = new PrismaClient();
 
-export async function POST (req: Request) {
+export async function GET (req: Request) {
 
   const WEBHOOK_SECRET = process.env.WEBHOOK_SECRET
 
