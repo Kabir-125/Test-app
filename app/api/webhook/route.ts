@@ -80,5 +80,5 @@ export async function POST (req: Request) {
 }
 
 export async function GET ( Request: Request ) {
-  return Response.json({it:"is ok"})
+  return new Response('', { status: 200 })
 }
