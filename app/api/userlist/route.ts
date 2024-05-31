@@ -1,3 +1,4 @@
+import { NextResponse } from 'next/server';
 import prisma from '../../../lib/prisma'
 
 export const dynamic = 'force-dynamic';
@@ -15,5 +16,5 @@ export async function GET ( Request: Request ) {
       }
     console.log(users);
     
-    return new Response(users, { status: 200 });
+    return new NextResponse(JSON.stringify(users), { status: 200 });
   }
