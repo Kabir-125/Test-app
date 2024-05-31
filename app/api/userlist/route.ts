@@ -15,5 +15,5 @@ export async function GET ( Request: Request ) {
       }
     console.log(users);
     
-    return new Response(JSON.stringify(users), {status: 200});
+    return new Response(users, { status: 200 });
   }
