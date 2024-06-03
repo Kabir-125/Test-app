@@ -9,7 +9,20 @@ datasource db {
 }
 
 model User {
-  id        String   @id @default(cuid())
+  id        Int      @id @default(autoincrement())
   email     String   @unique
+  username  String?
+  name      String?
+  age       Int?
   createdAt DateTime @default(now())
+  posts     Post[]
+}
+
+model Post {
+  id        Int       @id @default(autoincrement())
+  title     String
+  content   String
+  authorId  Int
+  createdAt DateTime  @default(now())
+  author    User      @relation(fields: [authorId], references: [id])
 }

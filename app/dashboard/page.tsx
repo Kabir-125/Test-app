@@ -20,10 +20,10 @@ export default function Home(){
                 < div className="text-lg text-gray-700 hover:text-gray-900 underline">Go back to Home </div>
             </Link>
             <h2 className="mt-10 mb-5">List of Users:</h2>
-            <ul>
-                {users.map(user => (
-                <li key={user.email}>{user.email}</li>
-                ))}
+            <ul >
+                    {users.map(user => (
+                    <li key={user.email}>{user.email}</li>
+                    ))}
             </ul>
         </>
         

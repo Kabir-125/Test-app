@@ -3,8 +3,9 @@ import { headers } from 'next/headers'
 import { WebhookEvent } from '@clerk/nextjs/server'
 import { PrismaClient } from '@prisma/client'
 
-
 const prisma = new PrismaClient();
+
+
 
 export async function POST (req: Request) {
 
@@ -52,18 +53,33 @@ export async function POST (req: Request) {
 
   // Do something with the payload
   // For this guide, you simply log the payload to the console
-  const { id, email_addresses } = evt.data as { id: string, email_addresses: Array<{ id: string; email_address: string }> };
+  const { id, email_addresses, first_name, last_name, birthday } = evt.data as unknown as { 
+    id: string;
+    email_addresses: Array<{ id: string; email_address: string }> ;
+    first_name: string;
+    last_name: string;
+    birthday: string;
+  };
   const eventType = evt.type;
 
   if (eventType === 'user.created') {
     const email = email_addresses[0].email_address;
+    const name = `${first_name} ${last_name}`;
+    let age: number | null = null;
+    if (birthday) {
+      const birthDate = new Date(birthday);
+      const currentDate = new Date();
+      age = currentDate.getFullYear() - birthDate.getFullYear();
+    }
 
     // Store the user in the database
     try {
       await prisma.user.create({
         data: {
-          id,
           email,
+          username: name,
+          name,
+          age
         },
       });
       console.log(`User with ID ${id} and email ${email} has been created.`);
