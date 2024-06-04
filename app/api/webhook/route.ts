@@ -79,7 +79,8 @@ export async function POST (req: Request) {
           email,
           username: name,
           name,
-          age
+          age,
+          birthday
         },
       });
       console.log(`User with ID ${id} and email ${email} has been created.`);
