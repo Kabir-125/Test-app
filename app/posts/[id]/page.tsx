@@ -13,24 +13,26 @@ interface Post {
 export default function Posts ({params}:any) {
     const [ posts, setPosts ] = useState<Post[]>([]);
     const [ addPost, setAddPost] = useState(false);
-    const [title, setTitle] = useState('');
-    const [content, setContent] = useState('');
+    const [ title, setTitle] = useState('');
+    const [ content, setContent] = useState('');
+    const [ update, alterupdate] = useState(true)
 
     useEffect(() => {
         fetch(`/api/getPosts/${params.id}`)
         .then(response => response.json())
         .then(data => setPosts(data))
         .catch(error => console.log("error occured", error))
-    },[addPost])
+    },[ addPost, update ])
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
+        var id =params.id;
         fetch('/api/posts', {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
             },
-            body: JSON.stringify({ title, content, params }),
+            body: JSON.stringify({ title, content, id }),
           })
         setAddPost(false);
       };
@@ -40,6 +42,10 @@ export default function Posts ({params}:any) {
         setContent('');
         setAddPost(false);
       };
+
+      const updatePage = () => {
+        alterupdate(!update);
+      }
     
     return(
         <>
@@ -97,7 +103,7 @@ export default function Posts ({params}:any) {
                 {
                     posts.length>0 &&posts.map(post => (
                         <li key={post.id}>
-                            <Post id = { post.id } title = { post.title } content = { post.content } />
+                            <Post id = { post.id } title = { post.title } content = { post.content } update = { updatePage } />
                         </li>
                     ))
                 }

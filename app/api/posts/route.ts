@@ -2,13 +2,12 @@ import prisma from "@/lib/prisma";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function POST (request: Request ) {
-    const { title, content, params } = await request.json();
-    console.log( title, content, params );
+    const { title, content, id } = await request.json();
     const post = await prisma.post.create({
         data:{
             title: title,
             content: content,
-            authorId: parseInt(params.id)
+            authorId: parseInt(id)
         }
     })
      
@@ -24,4 +23,19 @@ export async function DELETE (request: Request){
         }
     })
     return new NextResponse ( deletedPost, { status: 200 } );
+}
+
+export async function PATCH (request: Request){
+    const { updatedTitle, UpdatedContent, id } = await request.json();
+    
+    await prisma.post.update({
+        where:{
+            id: id
+        },
+        data:{
+            title: updatedTitle,
+            content: UpdatedContent
+        }
+    })
+    return new NextResponse("", {status: 200})
 }
