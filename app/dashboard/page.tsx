@@ -8,7 +8,7 @@ import { useUser } from "@clerk/clerk-react";
 
 export default function Home(){
     const [users, setUsers] = useState<{ email: string }[]>([]);
-    const [id, setId] = useState();
+    const [id, setId] = useState(0);
     const router = useRouter();
     const { user, isLoaded } = useUser();
 
