@@ -52,9 +52,12 @@ export default function Posts ({params}:any) {
             },
             body: JSON.stringify({ title, content, id }),
           })
-          setTitle('');
-          setContent('');
-        setAddPost(false);
+          .then( response => {
+            setTitle('');
+            setContent('');
+            setAddPost(false);
+          })
+        
       };
     
       const handleCancel = () => {
