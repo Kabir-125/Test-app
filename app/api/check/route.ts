@@ -3,7 +3,7 @@ import { NextResponse } from "next/server";
 
 export async function GET () {
     var lastNo = 0;
-    lastNo = await prisma.checks.findOne({
+    lastNo = await prisma.checks.findMany({
         take: 1,
         select: {
             id: true
