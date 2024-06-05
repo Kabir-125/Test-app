@@ -1,6 +1,7 @@
 'use client'
 import { useEffect, useState } from "react"
 import Post from "./Post"
+import { useRouter } from "next/navigation"
 
 interface Post {
     id: number   
@@ -12,21 +13,38 @@ interface Post {
 
 export default function Posts ({params}:any) {
     const [ posts, setPosts ] = useState<Post[]>([]);
+    const [ pagePosts, setPagePosts ] = useState<Post[]>([]);
+    const [ pageNo, setPageNo] = useState(0);
     const [ addPost, setAddPost] = useState(false);
     const [ title, setTitle] = useState('');
     const [ content, setContent] = useState('');
-    const [ update, alterupdate] = useState(true)
-
+    const [ update, alterupdate] = useState(true);
+    const [ id, page] = params.id;
+    const router = useRouter();
+    
     useEffect(() => {
-        fetch(`/api/getPosts/${params.id}`)
+        fetch(`/api/getPosts/${id}/${page}`)
         .then(response => response.json())
         .then(data => setPosts(data))
         .catch(error => console.log("error occured", error))
     },[ addPost, update ])
 
+    useEffect( () => {
+        fetch(`/api/posts/?id=${id}`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+        .then( response => response.json())
+        .then( ( data ) => {
+            const page = Math.max((( parseInt(data) + 1)/ 2) | 0, 1);
+            setPageNo(page);
+        });
+    }, [addPost, posts])
+
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        var id =params.id;
         fetch('/api/posts', {
             method: 'POST',
             headers: {
@@ -34,6 +52,8 @@ export default function Posts ({params}:any) {
             },
             body: JSON.stringify({ title, content, id }),
           })
+          setTitle('');
+          setContent('');
         setAddPost(false);
       };
     
@@ -47,6 +67,10 @@ export default function Posts ({params}:any) {
         alterupdate(!update);
       }
     
+    function onPageClick(no: number) {
+        router.push(`/posts/${id}/${no}`)
+    }
+
     return(
         <>
             { !addPost &&
@@ -108,6 +132,19 @@ export default function Posts ({params}:any) {
                     ))
                 }
             </ul>
+
+            <div className="flex flex-wrap justify-center items-center">
+                Pages: 
+                {Array.from({ length: pageNo }).map((_, index) => (
+                    <div
+                        key={index}
+                        className="w-6 h-6 bg-blue-500 text-white rounded-full flex items-center justify-center border border-gray-300 m-2 cursor-pointer hover:bg-blue-700 transition duration-300"
+                        onClick={() => onPageClick(index + 1)}
+                        >
+                            {index + 1}
+                    </div>
+                ))}
+            </div>
         </>
     )
 }

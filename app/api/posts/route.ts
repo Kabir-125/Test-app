@@ -1,4 +1,5 @@
 import prisma from "@/lib/prisma";
+import { NextApiRequest } from "next";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function POST (request: Request ) {
@@ -12,6 +13,19 @@ export async function POST (request: Request ) {
     })
      
     return new NextResponse( post, {status: 200});
+}
+
+export async function GET (request: NextRequest) {;
+    const { searchParams } = new URL(request.url);
+    const id = searchParams.get('id') || '';
+    
+    const numberOfPosts = await prisma.post.count({
+        where: {
+            authorId: parseInt(id)
+        }
+    });
+    
+    return new NextResponse( numberOfPosts, {status: 200})
 }
 
 export async function DELETE (request: Request){

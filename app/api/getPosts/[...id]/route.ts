@@ -2,11 +2,13 @@ import prisma from "@/lib/prisma";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET( request:NextRequest, {params}:any ) {
-    const id = parseInt(params.id);
+    const [ id, page] = params.id;
     
     const posts = await prisma.post.findMany({
+        skip: (page-1)*2,
+        take: 2,
         where:{
-            authorId: id
+            authorId: parseInt(id)
         },
         select:{
             id: true,
@@ -15,6 +17,9 @@ export async function GET( request:NextRequest, {params}:any ) {
             authorId: true,
             createdAt: true,
             author: true
+        },
+        orderBy:{
+            id: 'desc'
         }
     })
     

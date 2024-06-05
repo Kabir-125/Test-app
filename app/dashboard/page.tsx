@@ -44,7 +44,7 @@ export default function Home(){
             </Link>
             <button 
                 className="bg-red-500 text-white py-2 px-4 rounded hover:bg-red-700 transition duration-300 mt-5" 
-                onClick={() => router.push(`/posts/${id}`) }> 
+                onClick={() => router.push(`/posts/${id}/1`) }> 
                     My posts 
             </button>
             <h2 className="mt-10 mb-5">List of Users: </h2>

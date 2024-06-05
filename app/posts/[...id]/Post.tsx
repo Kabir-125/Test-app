@@ -23,6 +23,7 @@ export default function Post( props: { id: number, title: string, content: strin
             body: JSON.stringify({ id })
         });
         setactive(false);
+        update();
     };
     
     const handleUpdatePost = (e: React.FormEvent) => {
