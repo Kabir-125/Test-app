@@ -3,8 +3,7 @@ import { NextResponse } from "next/server";
 
 export async function GET () {
     var lastNo = 0;
-    lastNo = await prisma.checks.findMany({
-        take: 1,
+    lastNo = await prisma.checks.findFirst({
         select: {
             id: true
         },
@@ -12,7 +11,6 @@ export async function GET () {
             id: 'desc'
         }
     });
-
     if( lastNo>3 ){
         await prisma.checks.delete({
             where:{
