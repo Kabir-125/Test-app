@@ -15,7 +15,7 @@ export async function GET () {
     if( lastNo>3 ){
         await prisma.checks.delete({
             where:{
-                id: lastNo-3
+                id: lastNo-2
             }
         })
     }
