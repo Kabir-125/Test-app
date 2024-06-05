@@ -1,7 +1,10 @@
 import prisma from "@/lib/prisma";
 import { NextResponse } from "next/server";
+export const dynamic = 'force-dynamic';
 
 export async function GET () {
+    console.log("cron");
+    
     const lastMessage = await prisma.checks.findFirst({
         select: {
             id: true
