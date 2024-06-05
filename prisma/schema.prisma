@@ -27,3 +27,9 @@ model Post {
   createdAt DateTime  @default(now())
   author    User      @relation(fields: [authorId], references: [id])
 }
+
+model checks {
+  id        Int       @id @default(autoincrement())
+  message   String
+  createdAt DateTime  @default(now())
+}
