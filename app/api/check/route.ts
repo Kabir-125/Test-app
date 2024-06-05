@@ -25,5 +25,5 @@ export async function GET () {
         }
     })
     
-    return new NextResponse( "", {status: 200})
+    return new NextResponse( "hello", {status: 200})
 }
