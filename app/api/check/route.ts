@@ -3,7 +3,6 @@ import { NextResponse } from "next/server";
 export const dynamic = 'force-dynamic';
 
 export async function GET () {
-    console.log("cron");
     
     const lastMessage = await prisma.checks.findFirst({
         select: {
@@ -14,7 +13,6 @@ export async function GET () {
         }
     });
     const lastNo = parseInt(lastMessage.id);
-    console.log(lastNo);
     if( lastNo>3 ){
         await prisma.checks.delete({
             where:{
