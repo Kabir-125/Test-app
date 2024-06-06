@@ -24,6 +24,7 @@ export default function Home(){
         fetch('/api/getChecks')
         .then( response => response.json())
         .then( data => setChecksList(data))
+        .catch(error => console.error('Error fetching user id:', error));
     },[])
     
     useEffect(() => {

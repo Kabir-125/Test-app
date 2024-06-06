@@ -26,8 +26,7 @@ export default function Post( props: { id: number, title: string, content: strin
             setactive(false);
             update();
         })
-        ;
-        
+        .catch(error => console.error('Error fetching user id:', error));
     };
     
     const handleUpdatePost = (e: React.FormEvent) => {
@@ -38,7 +37,8 @@ export default function Post( props: { id: number, title: string, content: strin
               'Content-Type': 'application/json',
             },
             body: JSON.stringify({ updatedTitle, UpdatedContent, id }),
-          })
+        })
+        .catch(error => console.error('Error fetching user id:', error));
         setactive(true);
         setUpdating(false);
         update();

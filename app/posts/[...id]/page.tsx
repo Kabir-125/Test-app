@@ -13,7 +13,6 @@ interface Post {
 
 export default function Posts ({params}:any) {
     const [ posts, setPosts ] = useState<Post[]>([]);
-    const [ pagePosts, setPagePosts ] = useState<Post[]>([]);
     const [ pageNo, setPageNo] = useState(0);
     const [ addPost, setAddPost] = useState(false);
     const [ title, setTitle] = useState('');
@@ -40,7 +39,8 @@ export default function Posts ({params}:any) {
         .then( ( data ) => {
             const page = Math.max((( parseInt(data) + 1)/ 2) | 0, 1);
             setPageNo(page);
-        });
+        })
+        .catch(error => console.error('Error fetching user id:', error));
     }, [addPost, posts])
 
     const handleSubmit = (e: React.FormEvent) => {
@@ -57,6 +57,7 @@ export default function Posts ({params}:any) {
             setContent('');
             setAddPost(false);
           })
+          .catch(error => console.error('Error fetching user id:', error));
         
       };
     
