@@ -34,15 +34,11 @@ export default function Home(){
             .then(data => setId(data))
             .catch(error => console.error('Error fetching user id:', error));
         }
-        console.log(id)
-        
     },[user])
 
     if (!isLoaded) {
         return <div>Loading...</div>;
       }
-      console.log("ki",id)
-
 
     return(
         <>

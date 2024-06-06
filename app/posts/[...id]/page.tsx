@@ -36,7 +36,7 @@ export default function Posts ({params}:any) {
             }
         })
         .then( response => response.json())
-        .then( ( data ) => {
+        .then(( data ) => {
             const page = Math.max((( parseInt(data) + 1)/ 2) | 0, 1);
             setPageNo(page);
         })
@@ -58,7 +58,6 @@ export default function Posts ({params}:any) {
             setAddPost(false);
           })
           .catch(error => console.error('Error fetching user id:', error));
-        
       };
     
       const handleCancel = () => {

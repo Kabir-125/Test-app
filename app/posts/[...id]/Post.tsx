@@ -38,10 +38,13 @@ export default function Post( props: { id: number, title: string, content: strin
             },
             body: JSON.stringify({ updatedTitle, UpdatedContent, id }),
         })
+        .then(() => {
+            setactive(true);
+            setUpdating(false);
+            update();
+        })
         .catch(error => console.error('Error fetching user id:', error));
-        setactive(true);
-        setUpdating(false);
-        update();
+        
     }
     
     const handleCancel = () => {

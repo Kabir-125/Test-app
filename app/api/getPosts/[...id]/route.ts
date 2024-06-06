@@ -3,7 +3,7 @@ import { NextRequest, NextResponse } from "next/server";
 export const dynamic = 'force-dynamic';
 
 export async function GET( request:NextRequest, {params}:any ) {
-    const [ id, page] = params.id;
+    const [ id, page ] = params.id;
     
     const posts = await prisma.post.findMany({
         skip: (page-1)*2,
@@ -24,6 +24,5 @@ export async function GET( request:NextRequest, {params}:any ) {
         }
     })
     
-
     return new NextResponse( JSON.stringify(posts), {status: 200});
 }
